@@ -10,11 +10,11 @@
 
 运行截图：
 
-![pic](../../../AppData/Roaming/Typora/typora-user-images/image-20210720174406274.png)
+![pic](images/pic.png)
 
 tg推送截图：
 
-![tgbot](../../../AppData/Roaming/Typora/typora-user-images/image-20210720174529032.png)
+![tgbot](images/tgbot.png)
 
 ## 参考
 
