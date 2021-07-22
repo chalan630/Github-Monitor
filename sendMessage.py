@@ -1,10 +1,11 @@
 '''
 Modify: chalan630
 Date: 2021-07-20 17:02:43
-LastEditTime: 2021-07-20 17:57:54
+LastEditTime: 2021-07-22 09:42:33
 GitHub: https://github.com/JustYoomoon/CVEAP
 Description: 发送信息函数
 '''
+from os import stat
 import requests
 import dingtalkchatbot.chatbot as cb
 

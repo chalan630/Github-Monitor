@@ -69,15 +69,18 @@ def sendNews(keyword_list):
                     else:
                         msg ='\n更新了：' + str(keyword_list[index]) + '\n描述：' \
                             + str(descriptionList[index]) + '\nURL：' + str(urlList[index])
-                        # 三选一即可，没配置的 注释或者删掉
-                        # sendMessage.server(text, msg)
-                        # sendMessage.dingding(text, msg)
-                        sendMessage.tgbot(text,msg)
-                        # sendMessage.mail(text, msg)
-
-                        print("正在添加到黑名单：" + str(urlList[index]))
-                        black_list.append(str(urlList[index]))
-                        print("添加成功！！！")
+                        try:
+                            # 三选一即可，没配置的 注释或者删掉
+                            sendMessage.server(text, msg)
+                            # sendMessage.dingding(text, msg)
+                            sendMessage.tgbot(text,msg)
+                            # sendMessage.mail(text, msg)
+                        except BaseException:
+                            continue
+                        else:
+                            print("正在添加到黑名单：" + str(urlList[index]))
+                            black_list.append(str(urlList[index]))
+                            print("添加成功！！！")
                 else:
                     print(keyword_list[index] + "数据无更新！！！")
                     
