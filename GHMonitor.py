@@ -1,7 +1,7 @@
 '''
 Modify: chalan630
 Date: 2021-07-19 17:32:41
-LastEditTime: 2021-07-20 19:20:03
+LastEditTime: 2021-07-22 20:06:05
 GitHub: https://github.com/JustYoomoon/CVEAP
 Description: 主函数
 '''
@@ -36,10 +36,10 @@ def setBlackList(black_list):
         f.write('\n')
 
 
-def sendNews(keyword_list):
+def sendNews(keyword_list, proxy):
     print("初始化数据中！！！")
     # 基准关键词 条目表
-    basicList = getFunc.getBasicItem(keyword_list)
+    basicList = getFunc.getBasicItem(keyword_list, proxy)
 
     print("GitHub实时监控中 ...")
 
@@ -54,7 +54,7 @@ def sendNews(keyword_list):
             descriptionList = []
             time.sleep(180)
 
-            newList, urlList, descriptionList = getFunc.getAdvanceInfo(keyword_list)
+            newList, urlList, descriptionList = getFunc.getAdvanceInfo(keyword_list, proxy)
             # 推送正文内容
             str(newList)
             str(urlList)
@@ -98,5 +98,7 @@ def sendNews(keyword_list):
 if __name__ == '__main__':
     keyword_list = ["免杀", "cve", "漏洞利用", "红队", "蓝队", "redteam", "取证", "应急响应", "后渗透", "内网", "攻防", "网络安全",
                     "主机安全", "信息收集", "溯源"]
-
-    sendNews(keyword_list)
+    proxy = {
+        '127.0.0.1': '7890'
+    }
+    sendNews(keyword_list, proxy)

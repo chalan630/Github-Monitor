@@ -1,25 +1,25 @@
 '''
 Author: chalan630
 Date: 2021-07-20 17:25:38
-LastEditTime: 2021-07-20 17:47:41
+LastEditTime: 2021-07-22 21:21:21
 Description: 
 '''
 import re
 import requests
 import time
 import datetime
+import json
 
 
 # 信息清洗
-def advanceInfoCleanUp(res):
+def advanceInfoCleanUp(resDic):
     index = 0
     # 加入敏感词
     sensitiveWord = ['pdf']
-    descriptions = re.findall('"description":*.{1,200}"fork"', res)
     warn = 0
     for i in range(20):
         warn = 0
-        temp = descriptions[i].lower()
+        temp = resDic['items'][i]['description'].lower()
         for word in sensitiveWord:
             if word in temp:
                 warn = 1
@@ -30,18 +30,15 @@ def advanceInfoCleanUp(res):
             index = i
             break
 
-
-    description = re.findall('"description":*.{1,200}"fork"', res)[index].replace("\",\"fork\"", '').replace(
-                    "\"description\":\"", '')
     # 获取仓库URL
-    url = re.findall('"svn_url":*.{1,200}"homepage"', res)[index].replace("\",\"homepage\"", '').replace(
-                    "\"svn_url\":\"", '')
+    description = resDic['items'][index]['description']
+    url = resDic['items'][index]['svn_url']
     
 
     return description,url
 
 
-def getResponse(keyword_list, *args):
+def getResponse(keyword_list, proxy, *args):
     type = ""
     # 可变参数
     if len(args) == 1:
@@ -52,47 +49,46 @@ def getResponse(keyword_list, *args):
         urlList = args[1]
         descriptionList = args[2]
         type = "advance"
-    
-    for item in keyword_list:
+
+    i = 0    
+    while i < len(keyword_list):
         try:
-            if item == "cve":
+            if keyword_list[i] == "cve":
                 year = datetime.datetime.now().year
-                api = "https://api.github.com/search/repositories?q=CVE-{}&sort=updated".format(year)
+                url = "https://api.github.com/search/repositories?q=CVE-{}&sort=updated".format(year)
             else:
-                api = "https://api.github.com/search/repositories?q={}&sort=updated".format(item)
+                url = "https://api.github.com/search/repositories?q={}&sort=updated".format(keyword_list[i])
             
-            res = requests.get(api).text
+            res = requests.get(url, proxy).text
             time.sleep(5)
+            resDic = json.loads(res)
             if type == "basic":
-                s = re.findall('"total_count":*.{1,10}"incomplete_results"', res)
-                print(s)
-                s1 = str(s).replace(',"incomplete_results"\']', "").replace('[\'"total_count":', "")
-                basicList.append(s1)
+                count = resDic['total_count']
+                print(keyword_list[i]+":"+str(count))
+                basicList.append(str(count))
             elif type == "advance":
-                s = re.findall('"total_count":*.{1,10}"incomplete_results"', res)
-                print(s)
-                s1 = str(s).replace(',"incomplete_results"\']', "").replace('[\'"total_count":', "")
-                description,url = advanceInfoCleanUp(res)
-                newList.append(s1)
-                descriptionList.append(description)
-                urlList.append(url)
-        except Exception as e:
-            print(e, "github链接不通")
+                count = resDic['total_count']
+                description,url = advanceInfoCleanUp(resDic)
+                newList.append(str(count))
+                descriptionList.append(str(description))
+                urlList.append(str(url))
+            i += 1
+        except Exception:
+            print(keyword_list[i], "github链接不通")
+            time.sleep(10)
 
 
-
-def getAdvanceInfo(keyword_list):
+def getAdvanceInfo(keyword_list, proxy):
     print('开启本轮爬取:')
     newList = []
     descriptionList = []
     urlList = []
-    getResponse(keyword_list, newList, urlList, descriptionList)
+    getResponse(keyword_list, proxy, newList, urlList, descriptionList)
     return newList, urlList, descriptionList
 
 
-
-def getBasicItem(keyword_list):
+def getBasicItem(keyword_list, proxy):
     print('获取关键词基准条目:')
     basicList = []
-    getResponse(keyword_list, basicList)
+    getResponse(keyword_list, proxy, basicList)
     return basicList
