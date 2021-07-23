@@ -1,7 +1,7 @@
 '''
 Modify: chalan630
 Date: 2021-07-20 17:02:43
-LastEditTime: 2021-07-22 09:42:33
+LastEditTime: 2021-07-23 18:04:30
 GitHub: https://github.com/JustYoomoon/CVEAP
 Description: 发送信息函数
 '''
@@ -43,9 +43,9 @@ def mail(text, msg):
 # 钉钉
 def dingding(text, msg):
     # 将此处换为钉钉机器人的api
-    webhook = 'xxxxx'
-    ding = cb.DingtalkChatbot(webhook, secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-    ding.send_text(msg='{}\r\n{}'.format(text, msg), is_at_all=False)
+    webhook = ''
+    ding = cb.DingtalkChatbot(webhook, secret="")
+    ding.send_text(msg='{}\n{}'.format(text, msg), is_at_all=False)
 
 
 # server酱  http://sc.ftqq.com/?c=code

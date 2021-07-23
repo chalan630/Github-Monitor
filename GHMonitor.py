@@ -1,7 +1,7 @@
 '''
 Modify: chalan630
 Date: 2021-07-19 17:32:41
-LastEditTime: 2021-07-22 20:06:05
+LastEditTime: 2021-07-23 17:59:42
 GitHub: https://github.com/JustYoomoon/CVEAP
 Description: 主函数
 '''
@@ -71,9 +71,9 @@ def sendNews(keyword_list, proxy):
                             + str(descriptionList[index]) + '\nURL：' + str(urlList[index])
                         try:
                             # 三选一即可，没配置的 注释或者删掉
-                            sendMessage.server(text, msg)
-                            # sendMessage.dingding(text, msg)
-                            sendMessage.tgbot(text,msg)
+                            # sendMessage.server(text, msg)
+                            sendMessage.dingding(text, msg)
+                            # sendMessage.tgbot(text,msg)
                             # sendMessage.mail(text, msg)
                         except BaseException:
                             continue
@@ -97,7 +97,7 @@ def sendNews(keyword_list, proxy):
 
 if __name__ == '__main__':
     keyword_list = ["免杀", "cve", "漏洞利用", "红队", "蓝队", "redteam", "取证", "应急响应", "后渗透", "内网", "攻防", "网络安全",
-                    "主机安全", "信息收集", "溯源"]
+                    "主机安全", "信息收集", "溯源", "Penetration", "Bypass Antivirus", "工控安全"]
     proxy = {
         '127.0.0.1': '7890'
     }

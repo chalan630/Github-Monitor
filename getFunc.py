@@ -1,7 +1,7 @@
 '''
 Author: chalan630
 Date: 2021-07-20 17:25:38
-LastEditTime: 2021-07-22 21:21:21
+LastEditTime: 2021-07-23 17:52:54
 Description: 
 '''
 import re
@@ -15,13 +15,14 @@ import json
 def advanceInfoCleanUp(resDic):
     index = 0
     # 加入敏感词
-    sensitiveWord = ['pdf']
+    sensitiveWord = ['pdf', 'test']
     warn = 0
     for i in range(20):
         warn = 0
         temp = resDic['items'][i]['description'].lower()
+        temp_name = resDic['items'][i]['name'].lower()
         for word in sensitiveWord:
-            if word in temp:
+            if word in temp or word in temp_name:
                 warn = 1
                 break
         if warn == 1:
@@ -54,7 +55,7 @@ def getResponse(keyword_list, proxy, *args):
     while i < len(keyword_list):
         try:
             if keyword_list[i] == "cve":
-                year = datetime.datetime.now().year
+                year = time.localtime()[0]
                 url = "https://api.github.com/search/repositories?q=CVE-{}&sort=updated".format(year)
             else:
                 url = "https://api.github.com/search/repositories?q={}&sort=updated".format(keyword_list[i])
@@ -64,7 +65,6 @@ def getResponse(keyword_list, proxy, *args):
             resDic = json.loads(res)
             if type == "basic":
                 count = resDic['total_count']
-                print(keyword_list[i]+":"+str(count))
                 basicList.append(str(count))
             elif type == "advance":
                 count = resDic['total_count']
@@ -72,6 +72,7 @@ def getResponse(keyword_list, proxy, *args):
                 newList.append(str(count))
                 descriptionList.append(str(description))
                 urlList.append(str(url))
+            print(keyword_list[i]+":"+str(count))
             i += 1
         except Exception:
             print(keyword_list[i], "github链接不通")
@@ -79,7 +80,8 @@ def getResponse(keyword_list, proxy, *args):
 
 
 def getAdvanceInfo(keyword_list, proxy):
-    print('开启本轮爬取:')
+    localtime = time.asctime(time.localtime())
+    print(localtime + '开启本轮爬取:')
     newList = []
     descriptionList = []
     urlList = []
