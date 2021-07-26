@@ -1,5 +1,9 @@
 # Github Monitor
 
+![MIT](https://img.shields.io/badge/license-MIT-green)
+![Python](https://img.shields.io/badge/python-3.7-blue)
+![platform](https://img.shields.io/badge/platform-windows-lightgrey)
+
 ## 功能
 
 监控Github上的关键词更新情况，并推送钉钉、邮箱、TGBot、Server酱。
