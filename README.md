@@ -20,6 +20,9 @@ tg推送截图：
 
 ![tgbot](images/tgbot.png)
 
+钉钉机器人截图：
+![dingding](images/dingding.png)
+
 ## 参考
 
 [CVEAP](https://github.com/JustYoomoon/CVEAP)
